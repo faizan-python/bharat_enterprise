@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth.models import User
+from accounts.models import Account
 
 
 class Vendor(models.Model):
@@ -9,6 +10,7 @@ class Vendor(models.Model):
     Vendor model to store all Vendor related information
     """
 
+    account = models.ForeignKey(Account)
     created_by = models.ForeignKey(User)
     name = models.CharField(max_length=250)
     contact_person = models.CharField(blank=True, max_length=50)

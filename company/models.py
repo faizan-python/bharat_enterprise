@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth.models import User
+from accounts.models import Account
 
 
 class Company(models.Model):
@@ -9,6 +10,7 @@ class Company(models.Model):
     Company model to store all Company related information
     """
 
+    account = models.ForeignKey(Account)
     created_by = models.ForeignKey(User)
     name = models.CharField(max_length=250)
     contact_person = models.CharField(blank=True, max_length=50)

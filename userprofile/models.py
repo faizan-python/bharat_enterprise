@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+from accounts.models import Account
 
 
 class UserProfile(models.Model):
@@ -26,10 +27,10 @@ class UserProfile(models.Model):
             return ((item.value, item.name.replace('_', ' ')) for item in cls)
 
     user = models.OneToOneField(User, primary_key=True)
+    account = models.ForeignKey(Account, blank=True, null=True)
     first_name = models.CharField(blank=True, max_length=50)
     last_name = models.CharField(blank=True, max_length=50)
     designation = models.CharField(blank=True, max_length=120)
-    company_name = models.CharField(blank=True, max_length=120)
     about = models.TextField(blank=True, null=True)
     gender = models.CharField(blank=True, max_length=20,
                               choices=Gender.as_tuple())

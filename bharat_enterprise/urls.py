@@ -14,7 +14,23 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf import settings
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'core.views.index', name='core_index'),
+    url(r'^verify/', 'core.views.verify', name='core_verify'),
+    url(r'^home/', 'core.views.home', name='core_home'),
+    url(r'^login/$', 'core.views.login',
+        name='login'),
+    url(r'^logout/$',
+        'django.contrib.auth.views.logout', {'next_page': '/'},
+        name='logout'),
 ]
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
