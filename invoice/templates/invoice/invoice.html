@@ -1,0 +1,216 @@
+{% extends "templates/base.html" %}
+
+{% load staticfiles %}
+
+{% block stylesheets_extend %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+    .customdropdown{
+        width: 150px;
+    }
+</style>
+<form id="central">
+<div class="side-body">
+<div class="page-title">
+    <span class="title">Create Invoice</span>
+    <div class="description"></div>
+</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title">Enter Vendor Details</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                   <form class="form-inline">
+                         <label for="exampleInputEmail2">Select Vendor: </label>&nbsp; &nbsp;
+                         <select id="vendordropdown">
+                             <option value="">Select Vendor's</option>
+                          {% for vendor in vendors%}
+                              <option value="{{vendor.id}}">{{vendor}}</option>
+                          {% endfor %}
+                        </select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-xs btn-default" id="addvendor">Add New Vendor</button>
+                    </form>
+
+                    <form id="vendorform" style="display: none;" class="form-inline">
+                        <div class="sub-title">Vendor Details</div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Name: </label>&nbsp;&nbsp;
+                            <input type="text" placeholder="Name" name="name" id="name" class="form-control" autocomplete="off" required>
+                        </div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Contact Person: </label>&nbsp;&nbsp;
+                            <input type="text" autocomplete="off" placeholder="Contact Person" name="contact_person" id="contact_person" class="form-control" required>
+                        </div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Email: </label>&nbsp;&nbsp;
+                            <input type="email" autocomplete="off" placeholder="jane.doe@example.com" id="email" name="email" class="form-control">
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group">
+                            <label for="exampleInputEmail2">Contact Number:</label>&nbsp;&nbsp;
+                            <input type="text" autocomplete="off" placeholder="Contact Number" name="phone_number" id="phone_number" class="form-control" MAXLENGTH=12 onKeyPress="return numbersonly(this, event)" required>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Address: </label>&nbsp;&nbsp;
+                            <textarea type="text" rows="2" cols="50" id="address" name="address" class="form-control"> </textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title">Enter Vehicle Detail</div>
+                    </div>
+                </div>
+                <div class="card-body" id="vehicalcompleteform">
+                    <form class="form-inline">
+                         <label for="exampleInputEmail2">Select Vehicle: </label>&nbsp;&nbsp;
+                         <select id="vehicaldropdown" class="customdropdown">
+                            <option value="">Select Vehicle</option>
+                        </select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-xs btn-default" id="addvehical">Add New Vehicle</button>
+                    </form>
+                    <form class="form-inline" style="display: none;" id="vechicalform">
+                        <div class="sub-title">Vehicle Details</div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Vehicle Number: </label>&nbsp;&nbsp;
+                            <input type="text" placeholder="GJ XX ES XXXX" name="vehicle_number" id="vehicle_number" class="form-control" required>
+                        </div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Vehicle Name: </label>&nbsp;&nbsp;
+                            <input type="text" placeholder="Audi" name="vehicle_name" id="vehicle_name" class="form-control" required>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title">Enter Service Details</div>
+                    </div>
+                </div>
+
+
+             <div class="card-body">
+                <form class="form-inline" id="invoiceform">
+                    <label for="exampleInputEmail2">Select Company: </label>&nbsp;&nbsp;
+                     <select id="companydropdown">
+                      {% for company in companys%}
+                          <option value="{{company.id}}">{{company}}</option>
+                      {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <div class="card-body">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Item Description</div>
+                    <div class="panel-body">
+                    </div>
+                    <!-- Table -->
+                    <form id="tabledata">
+                        <table class="table" id="itemtable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </form>    
+                </div>
+                <button class="btn btn-sm btn-default" id="additem" type="button">Add Part</button>
+            </div>
+
+            <br>
+            <br>
+            <form id="costform">
+                <div class="card-body">
+                    <div class="form-group pull-right" style="padding-right:5em;">
+                        <label for="exampleInputEmail2">Tax Percentage: </label>&nbsp;&nbsp;
+                        <input type="text" name="first_name" id="tax" onKeyPress="return floatonly(this, event)" class="form-control" value=0 required>
+                    </div>
+                    <div class="form-group pull-right" style="padding-right:5em;">
+                        <label for="exampleInputEmail2">Total Amount Paid: </label>&nbsp;&nbsp;
+                        <input type="text" name="total_paid" id="total_paid" onKeyPress="return floatonly(this, event)" class="form-control" value=0 required>
+                    </div>
+                </div>
+            </form>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail2">Total Cost: </label>&nbsp;&nbsp;
+                    <input type="text" name="total_amount" id="totalcost" placeholder="Total Amount" class="form-control" readonly>
+                </div>
+                <div class="form-group" >
+                    <label for="exampleInputEmail2">Total Pending: </label>&nbsp;&nbsp;
+                    <input type="text" name="total_pending" id="total_pending" placeholder="Pending Amount" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="login-button text-center">
+                    <a class="btn btn-primary" id="calculateamount">Calculate Amount</a>
+                    <a class="btn btn-primary" id="save">Save</a>
+                    <a class="btn btn-primary" href="#" id="generateinvoice" >Generate Invoice</a>
+                </div>
+            </div>
+
+<!--                 <div class="card-body">
+                    <form class="form-inline" id="invoiceform">
+                        <label for="exampleInputEmail2">Select Company: </label>&nbsp;&nbsp;
+                         <select id="companydropdown">
+                          {% for company in companys%}
+                              <option value="{{company.id}}">{{company}}</option>
+                          {% endfor %}
+                        </select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Advance Payment: </label>&nbsp;&nbsp;
+                            <input type="text" onKeyPress="return floatonly(this, event)" placeholder="0" name="advance_payment" id="advance_payment" autocomplete="off" class="form-control" value=0>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="login-button text-center">
+                            <input type="submit" id="save-service" class="btn btn-primary" value="Save">
+                        </div>
+                    </form>
+                </div> -->
+
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}
+
+{% block scripts_extend %}
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/invoice.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.validate.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.formautofill.min.js' %}"></script>
+{% endblock scripts_extend %}

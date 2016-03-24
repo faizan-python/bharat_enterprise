@@ -28,4 +28,4 @@ class Company(models.Model):
     )
 
     def __unicode__(self):
-        return u' '.join((self.name))
+        return u''.join((self.name))

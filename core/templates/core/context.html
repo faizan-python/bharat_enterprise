@@ -6,7 +6,7 @@
 <div id="main-body" class="side-body padding-top">
                     <div class="row">
                         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <a href="{% url 'service:service_pending' %}">
+                            <a href="#">
                                 <div class="card red summary-inline">
                                     <div class="card-body">
                                         <i class="icon fa fa-inbox fa-4x"></i>
@@ -20,7 +20,7 @@
                             </a>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <a href="{% url 'service:service_search' %}">
+                            <a href="#">
                                 <div class="card yellow summary-inline">
                                     <div class="card-body">
                                         <i class="icon fa fa-comments fa-4x"></i>
@@ -34,7 +34,7 @@
                             </a>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <a href="{% url 'customer:customer_view' %}">
+                            <a href="#">
                                 <div class="card green summary-inline">
                                     <div class="card-body">
                                         <i class="icon fa fa-users fa-4x"></i>
@@ -48,7 +48,7 @@
                             </a>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                            <a href="{% url 'service:service_search' %}">
+                            <a href="#">
                                 <div class="card blue summary-inline">
                                     <div class="card-body">
                                         <i class="icon fa fa-share-alt fa-4x"></i>
@@ -114,7 +114,7 @@
                                 <div class="card-body no-padding">
                                     <ul class="message-list">
                                         {%for service in pending_service %}
-                                        <a href="{% url 'service:service_view' service.invoice_number%}">
+                                        <a href="#">
                                             <li>
                                                 <img src="{% static 'images/service.png' %}" class="profile-img pull-left">
                                                 <div class="message-block">
@@ -126,7 +126,7 @@
                                         </a>
                                         {% endfor %}
                                         {% if pending_service %}
-                                        <a id="message-load-more" href="{% url 'service:service_pending' %}">
+                                        <a id="message-load-more" href="#">
                                             <li class="text-center load-more">
                                                 <i class="fa fa-refresh"></i> view more..
                                             </li>

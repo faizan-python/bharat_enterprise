@@ -27,6 +27,9 @@ urlpatterns = [
     url(r'^logout/$',
         'django.contrib.auth.views.logout', {'next_page': '/'},
         name='logout'),
+
+    url(r'^invoice/', include('invoice.urls', namespace='invoice')),
+    url(r'^vehicle/', include('vehicle.urls', namespace='vehicle')),
 ]
 
 if settings.DEBUG:

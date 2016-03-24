@@ -13,7 +13,7 @@ class Payment(models.Model):
     recieved_by = models.ForeignKey(User)
 
     def __unicode__(self):
-        return str(self.payment_amount)
+        return u''.join((self.payment_amount))
 
 
 class Item(models.Model):
@@ -21,12 +21,13 @@ class Item(models.Model):
     """
     Item model
     """
-    payment_amount = models.FloatField(default=0)
+    total_amount = models.FloatField(default=0)
     modified_date = models.DateTimeField(auto_now=True)
     created_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     weight = models.FloatField(default=0)
+    price = models.FloatField(default=0)
     item_name = models.CharField(blank=True, null=True, max_length=150)
 
     def __unicode__(self):
-        return str(self.name)
+        return u''.join((self.item_name))

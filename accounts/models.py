@@ -20,7 +20,7 @@ class Plans(models.Model):
     is_active = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.plan_type
+        return u''.join((self.plan_type))
 
 
 class Account(models.Model):
@@ -47,4 +47,4 @@ class Account(models.Model):
             User, blank=True, null=True, related_name='org_modified_by')
 
     def __unicode__(self):
-        return self.name
+        return u''.join((self.name))

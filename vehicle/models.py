@@ -20,4 +20,4 @@ class Vehicle(models.Model):
     last_visited_date = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):
-        return u''.join((self.vehical_number))
+        return u''.join((self.vehicle_number))

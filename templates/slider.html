@@ -1,110 +1,110 @@
-                <nav class="navbar navbar-default" role="navigation">
-                    <div class="side-menu-container">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="#">
-                                <div class="icon fa fa-paper-plane"></div>
-                                <div class="title">{{request.user}}</div>
-                            </a>
-                            <button type="button" class="navbar-expand-toggle pull-right visible-xs">
-                                <i class="fa fa-times icon"></i>
-                            </button>
-                        </div>  
+<nav class="navbar navbar-default" role="navigation">
+    <div class="side-menu-container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <div class="icon fa fa-paper-plane"></div>
+                <div class="title">{{request.user}}</div>
+            </a>
+            <button type="button" class="navbar-expand-toggle pull-right visible-xs">
+                <i class="fa fa-times icon"></i>
+            </button>
+        </div>  
+        <ul class="nav navbar-nav">
+            <li class="active">
+                <a href="{% url 'core_home' %}">
+                    <span class="icon fa fa-tachometer"></span><span class="title">Dashboard</span>
+                </a>
+            </li>
+            <li class="panel panel-default dropdown">
+                <a data-toggle="collapse" href="#dropdown-element">
+                    <span class="icon fa fa-desktop"></span><span class="title">Invoice</span>
+                </a>
+                <!-- Dropdown level 1 -->
+                <div id="dropdown-element" class="panel-collapse collapse">
+                    <div class="panel-body">
                         <ul class="nav navbar-nav">
-                            <li class="active">
-                                <a href="{% url 'core_home' %}">
-                                    <span class="icon fa fa-tachometer"></span><span class="title">Dashboard</span>
-                                </a>
+                            <li><a href="{% url 'invoice:invoice_add'%}">Create Invoice</a>
                             </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-element">
-                                    <span class="icon fa fa-desktop"></span><span class="title">Service</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-element" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="{% url 'service:service_add' %}">Create Service</a>
-                                            </li>
-                                            <li><a href="{% url 'service:service_pending' %}">Pending Service</a>
-                                            </li>
-                                            <li><a href="{% url 'service:service_search' %}">Search Service</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                            <li><a href="#">Pending Invoice</a>
                             </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-table">
-                                    <span class="icon fa fa-table"></span><span class="title">Customer</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-table" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="{% url 'customer:add_customer' %}">Add Customer</a>
-                                            </li>
-                                            <li><a href="{% url 'customer:customer_view' %}">View Customer</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-form">
-                                    <span class="icon fa fa-file-text-o"></span><span class="title">Invoice</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-form" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="{% url 'service:create_invoice' %}">Create Invoice</a>
-                                            </li>
-                                            <li><a href="{% url 'service:invoice_list' %}">List Invoice</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- Dropdown-->
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-example">
-                                    <span class="icon fa fa-users"></span><span class="title">Workers</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-example" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="{% url 'mechanic:mechanic_view' %}">View Worker's</a>
-                                            </li>
-                                            <li><a href="{% url 'mechanic:add_mechanic' %}">Add Worker</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- Dropdown-->
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-icon">
-                                    <span class="icon fa fa-archive"></span><span class="title">Report</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-icon" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="{% url 'service:report' %}">Report</a>
-                                            </li>
-                                            <li><a href="{% url 'service:customer_report' %}">Customer Report</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="icon fa fa-thumbs-o-up"></span><span class="title">License</span>
-                                </a>
+                            <li><a href="{% url 'invoice:invoice_search'%}">Search Invoice</a>
                             </li>
                         </ul>
                     </div>
-                    <!-- /.navbar-collapse -->
-                </nav>
+                </div>
+            </li>
+            <li class="panel panel-default dropdown">
+                <a data-toggle="collapse" href="#dropdown-table">
+                    <span class="icon fa fa-table"></span><span class="title">Company</span>
+                </a>
+                <!-- Dropdown level 1 -->
+                <div id="dropdown-table" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#">Add Company</a>
+                            </li>
+                            <li><a href="#">View Company</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="panel panel-default dropdown">
+                <a data-toggle="collapse" href="#dropdown-form">
+                    <span class="icon fa fa-file-text-o"></span><span class="title">Invoice</span>
+                </a>
+                <!-- Dropdown level 1 -->
+                <div id="dropdown-form" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#">Create Invoice</a>
+                            </li>
+                            <li><a href="#">List Invoice</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <!-- Dropdown-->
+            <li class="panel panel-default dropdown">
+                <a data-toggle="collapse" href="#dropdown-example">
+                    <span class="icon fa fa-users"></span><span class="title">Vendor</span>
+                </a>
+                <!-- Dropdown level 1 -->
+                <div id="dropdown-example" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#">View Vendor</a>
+                            </li>
+                            <li><a href="#">Add Vendor</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <!-- Dropdown-->
+            <li class="panel panel-default dropdown">
+                <a data-toggle="collapse" href="#dropdown-icon">
+                    <span class="icon fa fa-archive"></span><span class="title">Report</span>
+                </a>
+                <!-- Dropdown level 1 -->
+                <div id="dropdown-icon" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#">Report</a>
+                            </li>
+                            <li><a href="#">Customer Report</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon fa fa-thumbs-o-up"></span><span class="title">License</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+</nav>
