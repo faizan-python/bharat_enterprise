@@ -1,0 +1,19 @@
+{% if vendor.advance_amount %}
+<div id="advance_pay_type" class="card-body">
+    <div class="sub-title">{{vendor.name| title}} has an advance amount of Rs. {{vendor.advance_amount}} Do You want to deduct the amount from advance Paid.</div>
+    <form class="form-inline">
+        <div class="checkbox">
+            <input type="checkbox" class="group1"  id="advance_pay_yes" name="advance_pay_yes">
+            <label for="exampleInputEmail2">
+                Yes
+            </label>
+        </div>
+        <div class="checkbox">
+            <input type="checkbox" class="group1" id="advance_pay_no" name="advance_pay_no">
+            <label for="exampleInputEmail2">
+                No
+            </label>
+        </div>
+    </form>
+</div>
+{% endif %}

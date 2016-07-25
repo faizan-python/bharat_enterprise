@@ -1,0 +1,86 @@
+{% extends "templates/base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+<style type="text/css">
+    .customdropdown{
+        width: 150px;
+    }
+</style>
+<form id="central">
+    <div class="side-body">
+        <div class="page-title">
+            <span class="title">Advance Payment</span>
+            <div class="description"></div>
+        </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="title">Vendor Details</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                           <form class="form-inline">
+                                 <label for="exampleInputEmail2">Select Vendor: </label>&nbsp; &nbsp;
+                                 <select id="vendordropdown">
+                                     <option value="">Select Vendor </option>
+                                  {% for vendor in vendors%}
+                                      <option value="{{vendor.id}}">{{vendor}}</option>
+                                  {% endfor %}
+                                </select>
+                            </form>
+
+                            <form id="vendorform" style="display: none;" class="form-inline">
+                                <div class="sub-title">Vendor Details</div>
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Name: </label>&nbsp;&nbsp;
+                                    <input type="text" placeholder="Name" name="name" id="name" class="form-control" autocomplete="off" required>
+                                </div>
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Contact Person: </label>&nbsp;&nbsp;
+                                    <input type="text" autocomplete="off" placeholder="Contact Person" name="contact_person" id="contact_person" class="form-control" required>
+                                </div>
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Email: </label>&nbsp;&nbsp;
+                                    <input type="email" autocomplete="off" placeholder="jane.doe@example.com" id="email" name="email" class="form-control">
+                                </div>
+                                <br>
+                                <br>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail2">Contact Number:</label>&nbsp;&nbsp;
+                                    <input type="text" autocomplete="off" placeholder="Contact Number" name="phone_number" id="phone_number" class="form-control" MAXLENGTH=12 onKeyPress="return numbersonly(this, event)" required>
+                                </div>
+                                <br>
+                                <br>
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Address: </label>&nbsp;&nbsp;
+                                    <textarea type="text" rows="2" cols="50" id="address" name="address" class="form-control"> </textarea>
+                                </div>
+                            </form>
+                            <br>
+                            <br>
+                            <div class="form-group pull-right" id="advance_amount_input" style="padding-right:5em; display: none;">
+                                <label for="exampleInputEmail2">Enter Advance Amount: </label>&nbsp;&nbsp;
+                                <input type="text" name="advance_amount" id="advance_amount" onKeyPress="return floatonly(this, event)" class="form-control" value=0 required>
+                            </div>
+                        </div>
+                        <div class="card-body" id="advance_button" style="display: none;">
+                            <div class="login-button text-center">
+                                <a class="btn btn-primary" id="pay_advance_amount">Pay Advance Amount</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</form>
+{% endblock content %}
+
+{% block scripts_extend %}
+    <script type="text/javascript" src="{% static 'js/advance_payment.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.validate.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.formautofill.min.js' %}"></script>
+{% endblock scripts_extend %}

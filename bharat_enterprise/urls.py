@@ -30,6 +30,7 @@ urlpatterns = [
 
     url(r'^invoice/', include('invoice.urls', namespace='invoice')),
     url(r'^vehicle/', include('vehicle.urls', namespace='vehicle')),
+    url(r'^payment/', include('payment.urls', namespace='payment')),
 ]
 
 if settings.DEBUG:

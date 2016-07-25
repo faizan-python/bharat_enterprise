@@ -38,6 +38,7 @@ class Invoice(models.Model):
     is_active = models.BooleanField(default=True)
     is_archive = models.BooleanField(default=False)
     complete_payment = models.BooleanField(default=False)
+    paid_from_advance = models.BooleanField(default=False)
 
     def __unicode__(self):
         return str(self.invoice_number)

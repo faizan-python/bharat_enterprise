@@ -26,6 +26,8 @@ class Vendor(models.Model):
         blank=True,
         null=True
     )
+    advance_amount = models.FloatField(default=0)
+    pending_amount = models.FloatField(default=0)
 
     def __unicode__(self):
         return u''.join((self.name))

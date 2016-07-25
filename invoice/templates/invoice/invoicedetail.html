@@ -1,0 +1,202 @@
+{% extends "templates/base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="side-body">
+<div class="page-title">
+    <span class="title">Invoice</span>
+    <div class="description"></div>
+</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title">Vendor Details</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form-inline">
+                        <div class="sub-title">Vendor Details</div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Name: </label>&nbsp;&nbsp;
+                            {{invoice.vendor.name|title|default:"NA"}}
+                        </div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Contact Person: </label>&nbsp;&nbsp;
+                            {{invoice.vendor.contact_person|title|default:"NA"}}
+                        </div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Email: </label>&nbsp;&nbsp;
+                            {{invoice.vendor.email|default:"NA"|default_if_none:"NA"}}
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail2">Contact Number:</label>&nbsp;&nbsp;
+                            {{invoice.vendor.phone_number}}
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Address: </label>&nbsp;&nbsp;
+                            {{invoice.vendor.address|title|default:"NA"}} 
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+            </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title">Vehicle Detail</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form-inline">
+                        <div class="sub-title">Vehicle Detail</div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Vehicle Number: </label>&nbsp;&nbsp;
+                            {{invoice.vehicle.vehicle_number}}
+                        </div>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Vehicle Name: </label>&nbsp;&nbsp;
+                            {{invoice.vehicle.vehicle_name|title}}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="title">Item Details</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form-inline">
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Invoice Number: </label>&nbsp;&nbsp;
+                            {{invoice.invoice_number}}
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Company: </label>&nbsp;&nbsp;
+                            {{invoice.company|title|default:"NA"|default_if_none:"NA"}}
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group" style="padding-right:5em;">
+                            <label for="exampleInputEmail2">Service Created By: </label>&nbsp;&nbsp;
+                            {{invoice.created_by}}
+                        </div>
+                        <input type="hidden" value="{{invoice.invoice_number}}" id="invoice-number">
+                    </form>
+
+                               <br>
+                               <br>
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Remarks: </label>&nbsp;&nbsp;
+                                    {{invoice.remark|title|default:"NA"}}
+                                </div>
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Tax: </label>&nbsp;&nbsp;
+                                     {{invoice.tax}} %
+                                </div> 
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Total Paid Amount: </label>&nbsp;&nbsp;
+                                    Rs. {{invoice.total_paid}}
+                                </div>
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Pending Amount: </label>&nbsp;&nbsp;
+                                    Rs. {{invoice.total_pending}}
+                                </div>
+                                <div class="form-group" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Total Item Cost: </label>&nbsp;&nbsp;
+                                    Rs. {{invoice.total_item_cost}}
+                                </div>
+
+                                <div class="form-group" id="display-total-cost" style="padding-right:5em;">
+                                    <label for="exampleInputEmail2">Total Cost: </label>&nbsp;&nbsp;
+                                    Rs. {{invoice.total_cost}}
+                                </div>
+                                <div class="card-body">
+                                    <div class="panel panel-default">
+                                        <!-- Default panel contents -->
+                                        <div class="panel-heading">Item Descriptions</div>
+                                        <div class="panel-body">
+                                        </div>
+                                        <!-- Table -->
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Weight</th>
+                                                <th>Price</th>
+                                                <th>Total Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                               {% for invoice in invoice.item.all %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{invoice.item_name}}</td>
+                                                    <td>{{invoice.weight}}</td>
+                                                    <td>{{invoice.price}}</td>
+                                                    <td>{{invoice.total_item_cost}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                        {% if invoice.complete_payment %}
+                                    <div class="card-body">
+                                        <div class="login-button text-center">
+                                            <a class="btn btn-primary" href="" id="generateinvoice" >Generate Invoice</a>
+                                        </div>
+                                    </div>
+
+                            {% else %}
+                                    <form id="costform">
+                                    <div class="card-body">
+                                        <div class="form-group pull-right" style="padding-right:5em;">
+                                            <label for="exampleInputEmail2">Pending Payment: </label>&nbsp;&nbsp;
+                                            <input type="text" name="pending_amount" id="pending_amount" onKeyPress="return floatonly(this, event)" autocomplete="off" value=0 class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail2">Total Cost: </label>&nbsp;&nbsp;
+                                            <input type="text" name="total_amount" id="totalcost" placeholder="Total Amount" autocomplete="off" class="form-control" value="{{invoice.total_cost}}" readonly>
+                                        </div>
+                                        <div class="form-group" >
+                                            <label for="exampleInputEmail2">Total Pending: </label>&nbsp;&nbsp;
+                                            <input type="text" name="total_pending" id="total_pending" placeholder="Pending Amount" value="{{invoice.total_pending}}" class="form-control" autocomplete="off" readonly>
+                                        </div>
+                                    </div>
+                                    </form>
+                                    <div class="card-body">
+                                        <div class="login-button text-center">
+                                            <a class="btn btn-primary" id="pendingamount">Pay Pending Amount</a>
+                                            <a class="btn btn-primary" href="" id="generateinvoice" >Generate Invoice</a>
+                                        </div>
+                                    </div>
+
+                            {% endif %}
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts_extend %}
+    <script type="text/javascript" src="{% static 'js/invoicedetail.js' %}"></script>
+{% endblock scripts_extend %}

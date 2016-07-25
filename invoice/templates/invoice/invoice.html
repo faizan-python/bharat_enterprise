@@ -66,6 +66,9 @@
                             <textarea type="text" rows="2" cols="50" id="address" name="address" class="form-control"> </textarea>
                         </div>
                     </form>
+
+                <!-- Advance Amount Block -->
+                <div id="advance_amount_block"></div>
                 </div>
             </div>
         </div>
@@ -82,7 +85,7 @@
                     <form class="form-inline">
                          <label for="exampleInputEmail2">Select Vehicle: </label>&nbsp;&nbsp;
                          <select id="vehicaldropdown" class="customdropdown">
-                            <option value="">Select Vehicle</option>
+                            <option id="default_vehicle_dropdown" value="default_vehicle_dropdown">Select Vehicle</option>
                         </select>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <button class="btn btn-xs btn-default" id="addvehical">Add New Vehicle</button>

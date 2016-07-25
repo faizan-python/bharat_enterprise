@@ -23,7 +23,8 @@ from vehicle.models import (
 from invoice.models import Invoice
 from payment.models import (
     Payment,
-    Item
+    Item,
+    AdvancePayment
 )
 
 
@@ -135,13 +136,20 @@ def invoice_create(request):
         invoice.total_item_cost = total_item_cost
         invoice.total_weight = total_weight
 
-        invoice.save()
+        if forms.get('advance_pay_deduct'):
+            import pdb;pdb.set_trace()
+            forms.get('advance_pay_deduct')
+            advance_obj = AdvancePayment.objects.create(
+                account=request.user.userprofile.account,
+                payment=payment,
+                vendor=vendor_obj,
+                created_by=request.user)
+            vendor_obj.advance_amount -= float(forms.get('total_cost'))
+            vendor_obj.save()
+            invoice.paid_from_advance = True
 
-        obj = list(Invoice.objects.filter(
-            invoice_number=invoice.invoice_number).values())
-        json.JSONEncoder.default = lambda self, obj: (
-            obj.isoformat() if isinstance(obj, datetime.datetime) else None)
-        return HttpResponse(json.dumps(obj), content_type="application/json")
+        invoice.save()
+        return HttpResponse(invoice.invoice_number)
 
 
 @require_http_methods(["GET"])
@@ -162,28 +170,28 @@ def invoice_search(request):
                                   context_instance=context)
 
 
-# @require_http_methods(["GET"])
-# @login_required(login_url='/')
-# def service_view(request, id):
-#     if request.method == "GET":
-#         service_obj = Service.objects.filter(invoice_number=id)
-#         if service_obj:
-#             context = RequestContext(request, {
-#                 "service": service_obj[0]})
-#             return render_to_response('service/viewservice.html',
-#                                       context_instance=context)
-#         return HttpResponseRedirect("/home/")
+@require_http_methods(["GET"])
+@login_required(login_url='/')
+def invoice_detail(request, id):
+    if request.method == "GET":
+        invoice_obj = Invoice.objects.filter(invoice_number=id)
+        if invoice_obj:
+            context = RequestContext(request, {
+                "invoice": invoice_obj[0]})
+            return render_to_response('invoice/invoicedetail.html',
+                                      context_instance=context)
+        return HttpResponseRedirect("/home/")
 
 
-# @require_http_methods(["GET"])
-# @login_required(login_url='/')
-# def service_pending(request):
-#     if request.method == "GET":
-#         context = RequestContext(request, {
-#             "services": Service.objects.filter(
-#                 is_active=True, is_serviced=False)})
-#         return render_to_response('service/pendingservice.html',
-#                                   context_instance=context)
+@require_http_methods(["GET"])
+@login_required(login_url='/')
+def invoice_pending(request):
+    if request.method == "GET":
+        context = RequestContext(request, {
+            "invoices": Invoice.objects.filter(
+                is_active=True, complete_payment=False)})
+        return render_to_response('invoice/pendinginvoice.html',
+                                  context_instance=context)
 
 
 # @require_http_methods(["GET", "POST"])
@@ -299,33 +307,33 @@ def invoice_search(request):
 #             return HttpResponseRedirect("/home/")
 
 
-# @require_http_methods(["POST"])
-# @login_required(login_url='/')
-# def pending_payment(request):
-#     if request.method == "POST":
-#         request_dict = request.POST.dict()
-#         data = json.loads(request_dict.keys()[0])
-#         service_obj = Service.objects.filter(
-#             invoice_number=data.get('service_id'))
-#         if service_obj:
-#             service_obj = service_obj[0]
-#             if service_obj.is_serviced:
-#                 pending_amount = service_obj.total_pending - \
-#                     data.get('pending_payment')
+@require_http_methods(["POST"])
+@login_required(login_url='/')
+def pending_payment(request):
+    if request.method == "POST":
+        request_dict = request.POST.dict()
+        data = json.loads(request_dict.keys()[0])
+        invoice_obj = Invoice.objects.filter(
+            invoice_number=data.get('invoice_id'))
+        if invoice_obj:
+            invoice_obj = invoice_obj[0]
+            if not invoice_obj.complete_payment:
+                pending_amount = invoice_obj.total_pending - \
+                    data.get('pending_payment')
 
-#                 if int(data.get('pending_payment')) > 0:
-#                     payment = Payment.objects.create(
-#                         payment_amount=data.get('pending_payment'),
-#                         recieved_by=request.user)
-#                     service_obj.payment.add(payment)
-#                 if pending_amount < 1:
-#                     service_obj.complete_payment = True
+                if int(data.get('pending_payment')) > 0:
+                    payment = Payment.objects.create(
+                        payment_amount=data.get('pending_payment'),
+                        recieved_by=request.user)
+                    invoice_obj.payment.add(payment)
+                if pending_amount < 1:
+                    invoice_obj.complete_payment = True
 
-#                 service_obj.total_paid += data.get('pending_payment')
-#                 service_obj.total_pending = pending_amount
-#                 service_obj.save()
-#                 return HttpResponse("Pending payment Complete")
-#             return HttpResponseRedirect("/home/")
+                invoice_obj.total_paid += data.get('pending_payment')
+                invoice_obj.total_pending = pending_amount
+                invoice_obj.save()
+                return HttpResponse("Pending payment Complete")
+            return HttpResponseRedirect("/home/")
 
 
 # @require_http_methods(["GET"])

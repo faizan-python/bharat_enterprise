@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    advance_pay_available = false
     $("#vendordropdown").prop("disabled", false);
     $("#vehicaldropdown").prop("disabled", false);
 
@@ -11,12 +12,14 @@ $(document).ready(function() {
       $('#vendorform textarea').attr('readonly', false);
       $("#vendordropdown").prop("disabled", true);
       $("#vehicaldropdown").prop("disabled", true);
+      deletevehicleoption()
       $("#vechicalform").show();
     });
 
     $("#addvehical").click(function(event) {
       event.preventDefault();
       $("#vehicaldropdown").prop("disabled", true);
+      $("#vechicalform").trigger('reset');
       $("#vechicalform").show();
     });
 
@@ -27,9 +30,21 @@ $(document).ready(function() {
         $('#vendorform textarea').attr('readonly', 'readonly');
     }
 
+    function deletevehicleoption() {
+        $("#vehicaldropdown").find("option").each(function() {
+          if ($(this).attr("id") != "default_vehicle_dropdown") {
+                $(this).remove();
+          }
+        })
+    }
+
     $("#vendordropdown").change(function() {
         var vendor_id = $('#vendordropdown').val();
-            
+        deletevehicleoption()
+        $("#vechicalform").trigger('reset');
+        $("#vechicalform").hide();
+        $("#vehicaldropdown").val("default_vehicle_dropdown");
+    
         $.ajax({
              type:"POST",
              url:"/vehicle/vendor/get/",
@@ -42,6 +57,8 @@ $(document).ready(function() {
              success: function(data){
                 autofillCustomerform(data['vendor'][0]);
                 vehicals = data['vehicle']
+                advance_block = data['advance_block']
+                $('#advance_amount_block').html(advance_block)
 
                 if (vehicals) {
                     for (i = 0; i < vehicals.length; ++i) { 
@@ -61,12 +78,27 @@ $(document).ready(function() {
         });
     });
 
+    $('body').on('click', '#advance_pay_yes', function (event) {
+      $("#vehicalcompleteform").show();
+      advance_pay_deduct = true
+      advance_pay_available = true
+      $("input.group1").attr("disabled", true);
+    });
+
+    $('body').on('click', '#advance_pay_no', function (event) {
+      advance_pay_deduct = false
+      advance_pay_available = true
+      $("input.group1").attr("disabled", true);
+    });
+
     $("#vehicaldropdown").change(function() {
-        var vehical_id = $('#vehicaldropdown').val();
-        $("#vechicalform").autofill(vehicals[vehical_id]);
-        $("#vechicalform").show();
-        $('#vechicalform input').attr('readonly', 'readonly');
-        $('#vechicalform textarea').attr('readonly', 'readonly');
+        if ($(this).val() != "default_vehicle_dropdown") {
+            var vehical_id = $('#vehicaldropdown').val();
+            $("#vechicalform").autofill(vehicals[vehical_id]);
+            $("#vechicalform").show();
+            $('#vechicalform input').attr('readonly', 'readonly');
+            $('#vechicalform textarea').attr('readonly', 'readonly');
+        }
     });
 
     function customerdata() {
@@ -108,7 +140,7 @@ $(document).ready(function() {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             },
              success: function(data){
-                window.location.href = "/service/pending/"
+                window.location.href = "/invoice/detail/"+data+"/";
              },
              error: function(){
                 $.toast({
@@ -221,6 +253,19 @@ $(document).ready(function() {
         $("#vendorform").show();
         $("#vehicleform").show();
 
+        if ($('#advance_pay_type').length) {
+            if (advance_pay_available == false) {
+                  $.toast({
+                      heading: 'Warning!!!',
+                      text: 'Please select the Checkbox of Advance Pay!!! ',
+                      icon: 'warning',
+                      hideAfter: 4000,
+                      position: 'mid-center'
+                  })
+                return
+            }
+        }
+
         if ($('#vendorform').valid() && $('#tabledata').valid() && $('#costform').valid()) {
             $('body').loading({stoppable: false}, 'start');
             var list = calculateSum()
@@ -235,7 +280,10 @@ $(document).ready(function() {
                 'tax' : checkifblank($('#tax').val()),
                 'total_paid' : checkifblank($('#total_paid').val()),
                 'pending_cost' : checkifblank($('#total_pending').val()),
-                'item_data': item_list,
+                'item_data': item_list
+            }
+            if (advance_pay_available == true) {
+                data.push({'advance_pay_deduct': advance_pay_deduct})
             }
             submitinvoiceform(data);
         }
@@ -249,5 +297,4 @@ $(document).ready(function() {
           })
         }
     });
-
 });

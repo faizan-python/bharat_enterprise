@@ -1,0 +1,73 @@
+{% extends "templates/base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="side-body">
+        <div class="page-title">
+            <span class="title">Invoice</span>
+            <div class="description"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card">
+                    <div class="card-header">
+
+                        <div class="card-title">
+                        <div class="title">Invoice Details</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="datatable table table-striped" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Invoice Number</th>
+                                    <th>Vendor</th>
+                                    <th>Vehicle</th>
+                                    <th>Company</th>
+                                    <th>Date</th>
+                                    <th>Total Weight</th>
+                                    <th>Total Cost</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Invoice Number</th>
+                                    <th>Vendor</th>
+                                    <th>Vehicle</th>
+                                    <th>Company</th>
+                                    <th>Date</th>
+                                    <th>Total Weight</th>
+                                    <th>Total Cost</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for invoice in invoices %}
+                                <tr>
+                                    <td>{{invoice.invoice_number}}</td>
+                                    <td>{{invoice.vendor}}</td>
+                                    <td>{{invoice.vehicle}}</td>
+                                    <td>{{invoice.company|title }}</td>
+                                    <td>{{invoice.date}}</td>
+                                    <td>{{invoice.total_weight}}</td>
+                                    <td>Rs. {{invoice.total_cost}}</td>
+                                    <td>
+                                        <div aria-label="Extra-small button group" role="group" class="btn-group btn-group-xs">
+                                          <a class="btn btn-default customerbutton" href="{% url 'invoice:invoice_detail' invoice.invoice_number%}" id={{invoice.invoice_number}} value="view" type="button">View</a>
+                                          <a class="btn btn-default customerbutton" href="#" id={{invoice.invoice_number}} value="view" type="button">Generate Invoice</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>    
+</div>
+{% endblock content %}
